@@ -1,0 +1,78 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Poppins:wght@200;300;400;500&display=swap');
+
+:root{
+    --primary-color: #fa7414;
+}
+*{
+    margin:0;
+    padding:0;
+    box-sizing: border-box;
+}
+
+/* navbar */
+.navbar{
+    background: rgb(228, 220, 220);
+}
+.navbar-center{
+    width:100%;
+    max-width: 1170px;
+    margin:0 auto;
+    padding:15px 1.5em;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.navbar i{
+    font-size: 25px;
+}
+.navbar .cart-btn{
+    position: relative;
+}
+.cart-btn .amount{
+    position: absolute;
+    top:-10px;
+    background:rgb(250, 127, 40);
+    color:#fff;
+    font-size: 20px;
+    padding:0 4px;
+    right:-8px;
+    text-align: center;
+    border-radius: 30%;
+}
+
+/* HERO */
+.hero{
+    width:100vw;
+    background:url(./images/hero-bcg.jpeg) center/cover no-repeat;
+    min-height: calc(100vh - 60px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.hero .banner{
+    background:rgba(255, 255, 255, 0.829);
+    text-align: center;
+    font-family: 'Lato',sans-serif;
+    padding:40px 30px;
+}
+.banner h1{
+    font-size: 60px;
+    letter-spacing: 1px;
+    font-weight: 600;
+    padding:5px;
+    text-transform: uppercase;
+}
+.banner button{
+    background:#fa7414;
+    color:#fff;
+    border:none;
+    font-size: 23px;
+    margin-top: 35px;
+    padding:10px 20px;
+    border:1px solid var(--primary-color)
+}
+.banner button:hover{
+    background:none;
+    transition: all 0.3s ease;
+    color:var(--primary-color);
+}
