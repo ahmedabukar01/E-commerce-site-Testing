@@ -97,10 +97,10 @@ body{
 }
 .product-box{
     overflow: hidden;
+    position: relative;
 }
 .product-box .img-box{
     min-width: 80px;
-    position: relative;
 }
 .product-box img{
     width:100%;
