@@ -1,7 +1,8 @@
 // variables
 const cartBtn = document.querySelector('#cart-btn');
 const productCenter = document.querySelector('#product-center');
-
+const cartOverlay = document.querySelector('#cart-overlay');
+const closeCartBtn = document.querySelector('#close-cart');
 
 // get products
 class Products{
@@ -45,14 +46,29 @@ class Ui{
             `;
             div.classList.add('product-box');
             productCenter.appendChild(div);
-        })
+        });
+
+        // showcart
+        this.showCart();
+        // clsoe cart
+        this.closeCart();
+    }
+    showCart(){
+          cartBtn.addEventListener('click',()=>{
+            cartOverlay.classList.add('show-cart');
+        });
+    }
+    closeCart(){
+            closeCartBtn.addEventListener('click',()=>{
+            cartOverlay.classList.remove('show-cart');
+        });
     }
 }
 
 // save products
 class Storage{
     static saveProducts(products){
-
+        localStorage.setItem('products', JSON.stringify(products));
     }
 }
 
