@@ -4,6 +4,7 @@ const productCenter = document.querySelector('#product-center');
 const cartOverlay = document.querySelector('#cart-overlay');
 const cartBox = document.querySelector('#cart-box');
 const closeCartBtn = document.querySelector('#close-cart');
+const cartBody = document.querySelector('#cart-body');
 
 let cart = [];
 // get products
@@ -88,9 +89,34 @@ class Ui{
         products = products.find(item=>{
             return item.id === id;
         });
-        cart.push(products)
+        cart = [...cart,products];
         Storage.saveCart(cart);
+        this.DisplayCart(cart);
+        console.log(cart);
 
+    }
+    DisplayCart(cart){
+        console.log(cart)
+        cart.forEach(item=>{
+            let div = document.createElement('div');
+            div.innerHTML= `
+            <!-- one Cart -->
+                <img src="${item.image}" alt="product">
+                <div class="info">
+                    <span class="cart-title">${item.title}</span>
+                    <span class="cart-price">${item.price}</span>
+                    <span class="remove">Remove</span>
+                </div>
+                <div class="cart-in-dec">
+                    <i class="fas fa-chevron-up" data-id="${item.id}"></i>
+                    <span class="amount">0</span>
+                    <i class="fas fa-chevron-down" data-id="${item.id}"></i>
+                </div>
+            <!-- one Cart -->
+            `;
+            div.classList.add('cart-item');
+            cartBody.appendChild(div);
+        });
     }
 
 }

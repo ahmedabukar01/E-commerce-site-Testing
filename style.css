@@ -170,8 +170,9 @@ body{
     width: 100%;
     max-width: 450px;
     background:#fff;
-    min-height: 100vh;
+    height: 100%;
     z-index: 99;
+    overflow: auto;
     transition: all 0.3s ease;
 }
 @media only screen and (max-width:570px){
