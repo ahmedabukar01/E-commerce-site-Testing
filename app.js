@@ -7,6 +7,7 @@ const closeCartBtn = document.querySelector('#close-cart');
 const cartBody = document.querySelector('#cart-body');
 const cartBtnAmount = document.querySelector('#cart-btn-amount');
 
+
 let cart = [];
 let buttons = [];
 // get products
@@ -164,16 +165,25 @@ class Ui{
             amount += item.amount;
         });
         cartBtnAmount.innerText = amount;
-        
-        // eventlisteners
-
-        // cartBody.addEventListener('click',e=>{
-        //     console.log(e.target);
-        // })
+        // event listeners
+        cartBody.addEventListener('click',e=>{
+            if(e.target.classList.contains('remove')){
+                cartBody.removeChild(e.target.parentElement.parentElement);
+                
+            }
+        })
+    }
+    
+    cartClick(){
+        cartBody.addEventListener('click',e=>{
+            if(e.target.classList.contains('remove')){
+                const element = e.target.parentElement.parentElement;
+                console.log(element)
+            }
+        })
     }
 
 }
-
 // save products
 class Storage{
     static saveProducts(products){
