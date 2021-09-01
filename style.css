@@ -216,13 +216,21 @@ body{
     justify-content: center;
 }
 .info .cart-title{
-    font-size: 21px
+    font-size: 14px;
+    font-family: 'Lato';
+    text-transform: capitalize;
 }
 .info .remove{
     color:rgb(245, 10, 10);
-    cursor:pointer
+    cursor:pointer;
+    font-size: 13px;
 }
-
+.info .cart-price{
+    font-size: 14px;
+}
+.cart-in-dec .cart-amount{
+    font-size: 13px
+}
 .cart-item .cart-in-dec{
     display:flex;
     flex-direction: column;
@@ -232,6 +240,7 @@ body{
 .cart-in-dec i{
     color:var(--primary-color);
     cursor:pointer;
+    font-size: 14px;
 }
 .cart-item img{
     max-width: 180px;

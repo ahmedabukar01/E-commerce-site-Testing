@@ -85,8 +85,7 @@ class Ui{
                 element.classList.add('in-cart');
                 // showcart
                 cartOverlay.classList.add('show-cart');
-                // add in cart button
-                inCartButtons = [...inCartButtons,element];
+            
             })
         })
     }
@@ -104,19 +103,20 @@ class Ui{
         buttons.forEach(button=>{
             if(button.dataset.id === id){
                 button.classList.add('in-cart');
-                button.innerText = 'in Cart'
+                button.innerText = 'in Cart';
                 button.disabled = true;
             }
         })
     }
     // add to cart
     addToCart(id){
+        let amount = 1;
         const products = Storage.getSavedProducts();
         const product = products.find(item=>{
             return item.id === id;
         });
+        product.amount = amount;
         cart = [...cart,product];
-        console.log(cart)
         Storage.saveCart(cart);
         this.DisplayCart(product);
 
@@ -133,7 +133,7 @@ class Ui{
                 </div>
                 <div class="cart-in-dec">
                     <i class="fas fa-chevron-up" data-id="${item.id}"></i>
-                    <span class="amount">0</span>
+                    <span class="cart-amount">${item.amount}</span>
                     <i class="fas fa-chevron-down" data-id="${item.id}"></i>
                 </div>
             <!-- one Cart -->
@@ -144,11 +144,13 @@ class Ui{
 
     // set App all
     setAppAll(){
-        cart = Storage.getSavedCart();
-        cart.forEach(item=>{
-            this.DisplayCart(item);
-            this.inCart();
-        })
+        if(Storage.getSavedCart.length > 0){
+            cart = Storage.getSavedCart();
+            cart.forEach(item=>{
+                this.DisplayCart(item);
+                this.inCart();
+            })
+        }
     }
 
 }
