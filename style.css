@@ -139,6 +139,7 @@ body{
 .product-box button i{
     font-size: 22px;
     color:var(--primary-color);
+    pointer-events: none;
 }
 .product-box:hover button{
     transform: translateX(0);
@@ -155,9 +156,12 @@ body{
     height: 100vh;
     z-index: 999;
     visibility: hidden;
+    transform: translateX(400px);
+    transition: transform 0.3s ease;
 }
 .show-cart{
     visibility: visible;
+    transform: translateX(-12px);
 }
 .cart-box{
     position: fixed;
@@ -167,7 +171,8 @@ body{
     max-width: 450px;
     background:#fff;
     min-height: 100vh;
-    z-index: 2;
+    z-index: 99;
+    transition: all 0.3s ease;
 }
 @media only screen and (max-width:570px){
     .cart-box{
