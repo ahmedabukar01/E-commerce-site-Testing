@@ -5,6 +5,7 @@ const cartOverlay = document.querySelector('#cart-overlay');
 const cartBox = document.querySelector('#cart-box');
 const closeCartBtn = document.querySelector('#close-cart');
 const cartBody = document.querySelector('#cart-body');
+const cartBtnAmount = document.querySelector('#cart-btn-amount');
 
 let cart = [];
 let buttons = [];
@@ -85,6 +86,8 @@ class Ui{
                 element.classList.add('in-cart');
                 // showcart
                 cartOverlay.classList.add('show-cart');
+                // cart logic
+                this.cartLogic();
             
             })
         })
@@ -144,13 +147,29 @@ class Ui{
 
     // set App all
     setAppAll(){
-        if(Storage.getSavedCart.length > 0){
+        if(localStorage.getItem('cart').length > 0){
             cart = Storage.getSavedCart();
             cart.forEach(item=>{
                 this.DisplayCart(item);
                 this.inCart();
+                this.cartLogic();
             })
         }
+    }
+    // cart logic
+    cartLogic(){
+        // amount
+        let amount = 0;
+        cart.map(item=>{
+            amount += item.amount;
+        });
+        cartBtnAmount.innerText = amount;
+        
+        // eventlisteners
+
+        // cartBody.addEventListener('click',e=>{
+        //     console.log(e.target);
+        // })
     }
 
 }
