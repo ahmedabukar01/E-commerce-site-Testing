@@ -236,3 +236,9 @@ body{
 .cart-item img{
     max-width: 180px;
 }
+
+/* classes added form js */
+button.in-cart{
+    background:var(--primary-color);
+    color:#fff;
+}
