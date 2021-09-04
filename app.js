@@ -6,7 +6,8 @@ const cartBox = document.querySelector('#cart-box');
 const closeCartBtn = document.querySelector('#close-cart');
 const cartBody = document.querySelector('#cart-body');
 const cartBtnAmount = document.querySelector('#cart-btn-amount');
-
+const cartTotal = document.querySelector('#total');
+let cartAmount = 0;
 
 let cart = [];
 let buttons = [];
@@ -75,7 +76,7 @@ class Ui{
     getButtons(){
         const allButtons = [...document.querySelectorAll('.add-cart-btn')];
          buttons = allButtons;
-        console.log(buttons)
+
         allButtons.forEach(button=>{
             button.addEventListener('click',e=>{
                 const element = e.target;
@@ -160,27 +161,53 @@ class Ui{
     // cart logic
     cartLogic(){
         // amount
+        this.calcCart();
+        // event listeners
+        cartBody.addEventListener('click',e=>{
+            if(e.target.classList.contains('remove')){
+                this.removeCart(e.target);
+                
+            }
+            else if(e.target.classList.contains('fa-chevron-up')){
+                this.increaseCart(e.target);
+            }
+        })
+    }
+    // calculate Cart
+    calcCart(){
         let amount = 0;
         cart.map(item=>{
             amount += item.amount;
         });
         cartBtnAmount.innerText = amount;
-        // event listeners
-        cartBody.addEventListener('click',e=>{
-            if(e.target.classList.contains('remove')){
-                cartBody.removeChild(e.target.parentElement.parentElement);
-                
-            }
-        })
+        this.getTotalCart(amount);
     }
-    
-    cartClick(){
-        cartBody.addEventListener('click',e=>{
-            if(e.target.classList.contains('remove')){
-                const element = e.target.parentElement.parentElement;
-                console.log(element)
+    // get total
+    getTotalCart(){
+        let totalCart = 0;
+        cart.forEach(item=>{
+            const totalItem = item.price * item.amount;
+            totalCart += totalItem;
+        });
+        cartTotal.innerText = totalCart;
+        
+    }
+    // remove cart
+    removeCart(element){
+        cartBody.removeChild(element.parentElement.parentElement);
+    }
+    // increase cart
+    increaseCart(element){
+        const id = element.dataset.id;
+        let amount = 0;
+        cart.forEach(item=>{
+            if(item.id === id){
+                item.amount +=1;
+                amount = item.amount;
             }
-        })
+        });
+        element.nextElementSibling.innerText = amount;
+        this.calcCart();
     }
 
 }
