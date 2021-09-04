@@ -8,7 +8,7 @@ const cartBody = document.querySelector('#cart-body');
 const cartBtnAmount = document.querySelector('#cart-btn-amount');
 const cartTotal = document.querySelector('#total');
 let cartAmount = 0;
-
+let cartItem = 0;
 let cart = [];
 let buttons = [];
 // get products
@@ -29,7 +29,7 @@ class Products{
        }
     }
 }
-
+console.log(cartItem)
 // display products
 class Ui{
     displayProducts(products){
@@ -117,10 +117,10 @@ class Ui{
     addToCart(id){
         let amount = 1;
         const products = Storage.getSavedProducts();
-        const product = products.find(item=>{
+        const product = {...products.find(item=>{
             return item.id === id;
-        });
-        product.amount = amount;
+        }),amount};
+        console.log(product)
         cart = [...cart,product];
         Storage.saveCart(cart);
         this.DisplayCart(product);
@@ -151,6 +151,7 @@ class Ui{
     setAppAll(){
         if(localStorage.getItem('cart').length > 0){
             cart = Storage.getSavedCart();
+            
             cart.forEach(item=>{
                 this.DisplayCart(item);
                 this.inCart();
@@ -169,7 +170,8 @@ class Ui{
                 
             }
             else if(e.target.classList.contains('fa-chevron-up')){
-                this.increaseCart(e.target);
+                this.increaseCart(e.target.dataset.id)
+
             }
         })
     }
@@ -197,17 +199,14 @@ class Ui{
         cartBody.removeChild(element.parentElement.parentElement);
     }
     // increase cart
-    increaseCart(element){
-        const id = element.dataset.id;
-        let amount = 0;
+    increaseCart(id){
         cart.forEach(item=>{
-            if(item.id === id){
-                item.amount +=1;
-                amount = item.amount;
+            if(item.id ===id){
+                item.amount++;
             }
+            
         });
-        element.nextElementSibling.innerText = amount;
-        this.calcCart();
+        Storage.saveCart(cart);
     }
 
 }
@@ -218,6 +217,10 @@ class Storage{
     }
     static getSavedProducts(){
         return JSON.parse(localStorage.getItem('products'));
+    }
+    static getOneProduct(id){
+        const cart = JSON.parse(localStorage.getItem('cart'));
+        return {...cart.filter(item=>item.id === id)}
     }
     static saveCart(cart){
         localStorage.setItem('cart', JSON.stringify(cart));

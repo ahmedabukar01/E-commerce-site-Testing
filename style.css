@@ -257,8 +257,8 @@ body{
 }
 .cart-footer .options{
     display: flex;
-    justify-content: space-between;
-    min-width:40vw;
+    justify-content: center;
+    min-width:30vw;
     margin-top:15px
 }
 .options button{
@@ -278,6 +278,7 @@ body{
     background:chartreuse;
     color:#fff;
     border:1px solid chartreuse;
+    margin-left:15px;
     transition: all 0.3s ease;
 }
 .puyment:hover{
