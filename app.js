@@ -7,10 +7,13 @@ const closeCartBtn = document.querySelector('#close-cart');
 const cartBody = document.querySelector('#cart-body');
 const cartBtnAmount = document.querySelector('#cart-btn-amount');
 const cartTotal = document.querySelector('#total');
+const clearCart = document.querySelector('#clear-cart')
 let cartAmount = 0;
 let cartItem = 0;
 let cart = [];
 let buttons = [];
+
+
 // get products
 class Products{
    async getProducts(){
@@ -168,7 +171,8 @@ class Ui{
         // event listeners
         cartBody.addEventListener('click',e=>{
             if(e.target.classList.contains('remove')){
-                this.removeCart(e.target);
+                this.removeCart(e.target.dataset.id);
+                this.removeDOM(e.target);
                 
             }
             else if(e.target.classList.contains('fa-chevron-up')){
@@ -179,6 +183,11 @@ class Ui{
                 this.decreaseCart(e.target)
                 console.log('if')
             }
+        })
+
+        // clear cart
+        clearCart.addEventListener('click',e=>{
+            this.clearAllCart();
         })
     }
 
@@ -202,12 +211,19 @@ class Ui{
         
     }
     // remove cart
-    removeCart(element){
-        const id = element.dataset.id;
-        cartBody.removeChild(element.parentElement.parentElement);
+    removeCart(id){
         cart = cart.filter(item=> item.id !== id);
         Storage.saveCart(cart);
         this.getTotalCart();
+        const button = buttons.find(item=>item.dataset.id === id);
+        console.log(button)
+        button.innerHTML = `<i class="fas fa-shopping-cart"></i>add to cart`;
+        button.classList.remove('in-cart');
+        button.disabled = false;
+
+    }
+    removeDOM(element){
+        cartBody.removeChild(element.parentElement.parentElement);
     }
     // increase cart
     increaseCart(element){
@@ -242,6 +258,17 @@ class Ui{
         
     }
 
+    // clear cart
+    clearAllCart(){
+       if(cart.length>0){
+        cart.forEach(item=>this.removeCart(item.id));
+        while(cartBody.children.length>0){
+            cartBody.removeChild(cartBody.children[0]);
+        }
+        cartOverlay.classList.remove('show-cart');
+       }
+    }
+
 }
 // save products
 class Storage{
@@ -257,7 +284,6 @@ class Storage{
     }
     static saveCart(cart){
         localStorage.setItem('cart', JSON.stringify(cart));
-        console.log('saved',cart)
     }
     static getSavedCart(){
         return JSON.parse(localStorage.getItem('cart'));
