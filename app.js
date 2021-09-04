@@ -29,11 +29,11 @@ class Products{
        }
     }
 }
-console.log(cartItem)
+
 // display products
 class Ui{
     displayProducts(products){
-        console.log(products);
+        
         products.forEach(item=>{
             const div = document.createElement('div');
             div.innerHTML = `
@@ -88,8 +88,6 @@ class Ui{
                 element.classList.add('in-cart');
                 // showcart
                 cartOverlay.classList.add('show-cart');
-                // cart logic
-                this.cartLogic();
             
             })
         })
@@ -115,6 +113,9 @@ class Ui{
     }
     // add to cart
     addToCart(id){
+        if(!localStorage.getItem('cart')){
+            this.cartLogic();
+        }
         let amount = 1;
         const products = Storage.getSavedProducts();
         const product = {...products.find(item=>{
@@ -124,6 +125,8 @@ class Ui{
         cart = [...cart,product];
         Storage.saveCart(cart);
         this.DisplayCart(product);
+        this.getTotalCart();
+        this.addInCart(id);
 
     }
     DisplayCart(item){
@@ -134,7 +137,7 @@ class Ui{
                 <div class="info">
                     <span class="cart-title">${item.title}</span>
                     <span class="cart-price">${item.price}</span>
-                    <span class="remove">Remove</span>
+                    <span class="remove" data-id="${item.id}">Remove</span>
                 </div>
                 <div class="cart-in-dec">
                     <i class="fas fa-chevron-up" data-id="${item.id}"></i>
@@ -149,20 +152,19 @@ class Ui{
 
     // set App all
     setAppAll(){
-        if(localStorage.getItem('cart').length > 0){
+        if(localStorage.getItem('cart')){
             cart = Storage.getSavedCart();
             
             cart.forEach(item=>{
                 this.DisplayCart(item);
-                this.inCart();
-                this.cartLogic();
-            })
+            });
+            this.inCart();
+            this.getTotalCart();
+            this.cartLogic();
         }
     }
     // cart logic
     cartLogic(){
-        // amount
-        this.calcCart();
         // event listeners
         cartBody.addEventListener('click',e=>{
             if(e.target.classList.contains('remove')){
@@ -170,43 +172,74 @@ class Ui{
                 
             }
             else if(e.target.classList.contains('fa-chevron-up')){
-                this.increaseCart(e.target.dataset.id)
-
+                this.increaseCart(e.target)
+                console.log('if')
+            }
+            else if(e.target.classList.contains('fa-chevron-down')){
+                this.decreaseCart(e.target)
+                console.log('if')
             }
         })
     }
-    // calculate Cart
-    calcCart(){
-        let amount = 0;
-        cart.map(item=>{
-            amount += item.amount;
-        });
-        cartBtnAmount.innerText = amount;
-        this.getTotalCart(amount);
-    }
+
     // get total
     getTotalCart(){
+      if(localStorage.getItem('cart')){
         let totalCart = 0;
         cart.forEach(item=>{
             const totalItem = item.price * item.amount;
             totalCart += totalItem;
         });
         cartTotal.innerText = totalCart;
+
+        // amount
+        let amount = 0;
+        cart.map(item=>{
+            amount += item.amount;
+        });
+        cartBtnAmount.innerText = amount;
+      }
         
     }
     // remove cart
     removeCart(element){
+        const id = element.dataset.id;
         cartBody.removeChild(element.parentElement.parentElement);
+        cart = cart.filter(item=> item.id !== id);
+        Storage.saveCart(cart);
+        this.getTotalCart();
     }
     // increase cart
-    increaseCart(id){
-        cart.forEach(item=>{
-            if(item.id ===id){
-                item.amount++;
-            }
+    increaseCart(element){
+        const id = element.dataset.id;
+        const item = cart.find(item=>item.id === id);
+        // cart.forEach(item=>{
+        //     if(item.id ===id){
+        //         item.amount++;
+        //     }
             
-        });
+        // });
+        item.amount = item.amount +1;
+        element.nextElementSibling.innerText = item.amount;
         Storage.saveCart(cart);
+        this.getTotalCart();
+        
+    }
+     // Decrease cart
+     decreaseCart(element){
+        const id = element.dataset.id;
+        const item = cart.find(item=>item.id === id);
+    
+      if(item.amount>1){
+        item.amount = item.amount -1;
+        element.previousElementSibling.innerText = item.amount;
+        Storage.saveCart(cart);
+        this.getTotalCart();
+      }
+      else{
+          this.removeCart(element);
+      }
+        
     }
 
 }
@@ -224,7 +257,7 @@ class Storage{
     }
     static saveCart(cart){
         localStorage.setItem('cart', JSON.stringify(cart));
-        console.log(cart)
+        console.log('saved',cart)
     }
     static getSavedCart(){
         return JSON.parse(localStorage.getItem('cart'));
