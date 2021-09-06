@@ -50,7 +50,7 @@ body{
 /* HERO */
 .hero{
     width:100%;
-    background:url(./images/hero-bcg.jpeg) center/cover no-repeat;
+    background:url(./images/hero-1.jpg) center/cover no-repeat;
     min-height: calc(100vh - 60px);
     display: flex;
     align-items: center;
